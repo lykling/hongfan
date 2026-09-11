@@ -1,0 +1,21 @@
+HONGFAN
+Copyright 2026 Pride Leong.
+
+This product includes software developed by the HONGFAN project
+(https://github.com/lykling/hongfan).
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+This product includes software developed by third parties:
+
+- doctest (https://github.com/doctest/doctest) — Boost Software License 1.0.
+  Single-header C++ test framework, vendored in third_party/, used for unit
+  testing only (not linked into libhongfan).
+
+The M1 baseline has zero third-party runtime dependencies: YAML parsing is
+an in-tree controlled-subset parser; hashing (FNV-1a) and RNG (SplitMix64)
+are in-tree.

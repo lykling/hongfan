@@ -1,0 +1,22 @@
+# =============================================================================
+# HONGFAN Allowed Dependencies
+# =============================================================================
+#
+# Every third-party dependency must be listed here. CI guards against
+# unlisted dependencies.
+#
+# Format:
+#   <name> | <version> | <license> | <tier> | <approved_by_adr> | <description>
+#
+# Tier:
+#   allowed    — can be used directly
+#   restricted — specific subsets only (see ADR for scope)
+#   review     — requires case-by-case review before each use
+#   forbidden  — must not be used
+#
+# To add a new dependency:
+#   1. Submit PR with ADR draft (purpose / size / alternatives)
+#   2. Review + approval
+#   3. On approval: add entry below + merge ADR
+
+doctest | 2.4.12 | BSL-1.0 | allowed | 0015 | single-header C++ test framework, vendored in third_party/, test-only (not linked into libhongfan)

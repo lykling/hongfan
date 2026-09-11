@@ -1,0 +1,77 @@
+# =============================================================================
+# HONGFAN Pre-commit Hooks
+# =============================================================================
+#
+# Install:
+#   pip install pre-commit
+#   pre-commit install
+#   pre-commit install --hook-type commit-msg
+
+minimum_pre_commit_version: "3.7.0"
+
+repos:
+  # ---------------------------------------------------------------------------
+  # Generic hygiene
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^tests/golden/
+      - id: end-of-file-fixer
+        exclude: ^tests/golden/
+      - id: check-yaml
+        exclude: ^tests/golden/
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+        exclude: ^third_party/
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # ---------------------------------------------------------------------------
+  # Conventional Commits (commit-msg hook)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert]
+
+  # ---------------------------------------------------------------------------
+  # Local hooks: format, lint, commit-message language
+  # ---------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        entry: ./tools/format.sh --check
+        language: system
+        files: \.(cpp|hpp)$
+        pass_filenames: false
+
+      - id: hongfan-lint
+        name: hongfan lint (license headers)
+        entry: ./tools/lint.sh
+        language: system
+        pass_filenames: false
+
+      - id: commit-msg-english-only
+        name: commit message must be English-only
+        entry: ./tools/check-commit-msg.sh
+        language: system
+        stages: [commit-msg]
+
+  # ---------------------------------------------------------------------------
+  # Shell scripts
+  # ---------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: python
+        additional_dependencies: [shellcheck-py==0.10.0.1]
+        types: [shell]

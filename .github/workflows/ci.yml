@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Commit & PR title lint (Conventional Commits; English-only messages)
+  # ---------------------------------------------------------------------------
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run commitlint
+        uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: .github/commitlint.config.js
+      - name: Reject non-ASCII (CJK) commit messages
+        run: |
+          if git log --format="%B" origin/main..HEAD | grep -qP '[\x{4e00}-\x{9fff}]'; then
+            echo "::error::commit messages must be English-only"
+            git log --format="%h %B" origin/main..HEAD | grep -nP '[\x{4e00}-\x{9fff}]' | head -3
+            exit 1
+          fi
+
+  pr-title:
+    name: PR Title (Conventional Commits)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+
+  # ---------------------------------------------------------------------------
+  # CMake build matrix: presets x compilers, zero-warning policy
+  # ---------------------------------------------------------------------------
+  cmake:
+    name: CMake (${{ matrix.preset }}, ${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [release, asan, ubsan]
+        compiler: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ninja
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+      - name: Setup compiler
+        run: |
+          if [[ "${{ matrix.compiler }}" == "clang" ]]; then
+            wget -q https://apt.llvm.org/llvm.sh
+            chmod +x llvm.sh
+            sudo ./llvm.sh 22
+            echo "CC=clang-22" >> $GITHUB_ENV
+            echo "CXX=clang++-22" >> $GITHUB_ENV
+          else
+            sudo apt-get install -y g++-14
+            echo "CC=gcc-14" >> $GITHUB_ENV
+            echo "CXX=g++-14" >> $GITHUB_ENV
+          fi
+      - name: Configure
+        run: cmake --preset=${{ matrix.preset }}
+      - name: Build
+        run: cmake --build --preset=${{ matrix.preset }}
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.preset }} --output-on-failure
+      - name: Check no warnings in build output
+        run: |
+          OUTPUT=$(cmake --build --preset=${{ matrix.preset }} --clean-first 2>&1)
+          echo "${OUTPUT}"
+          if echo "${OUTPUT}" | grep -iE "warning:" | grep -vE "CMake Warning|Policy CMP[0-9]+"; then
+            echo "::error::build emitted warning(s); fix them"
+            exit 1
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Lint: license headers + string-language policy + format + tidy
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint (license + format + tidy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build g++-14 cppcheck
+          wget -q https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 22
+      - name: License headers + cppcheck
+        run: tools/lint.sh
+      - name: clang-format
+        run: CLANG_FORMAT=clang-format-22 tools/format.sh --check
+      - name: clang-tidy
+        run: |
+          CC=gcc-14 CXX=g++-14 cmake --preset=release >/dev/null
+          cmake --build --preset=release >/dev/null
+          clang-tidy-22 -p build/release --quiet --warnings-as-errors='*' src/*.cpp

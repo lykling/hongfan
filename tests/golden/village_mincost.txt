@@ -1,0 +1,42 @@
+run: ruleset=75ad37583bddb6e8 state=70ed88907fb90169 strategy=min-cost seed=7
+
+—— 编年史 ——
+—— 第 1 刻 ——
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 2 刻 ——
+[庶征] 乌云聚拢，雨落村落。  (turn-rainy)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 3 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 4 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 5 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 挥汗操练，技艺渐长。  (practice)
+
+—— 第 6 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 7 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 挥汗操练，技艺渐长。  (practice)
+
+—— 第 8 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 用了一餐，腹中暖了起来。  (eat)
+
+—— 终态 ——
+bush BerryBush {amount=2}
+ling Person {name=阿翎, satiety=0.9, skill=0.1}
+pantry Food {amount=12}
+rock Person {name=阿岩, satiety=0.9, skill=0.4}
+world World {weather=rainy}
+R neighbor rock -> ling
+final_hash=e6c25c54477886ae

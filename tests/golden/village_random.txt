@@ -1,0 +1,42 @@
+run: ruleset=75ad37583bddb6e8 state=70ed88907fb90169 strategy=random seed=42
+
+—— 编年史 ——
+—— 第 1 刻 ——
+[八政] 阿翎 挥汗操练，技艺渐长。  (practice)
+
+—— 第 2 刻 ——
+[庶征] 乌云聚拢，雨落村落。  (turn-rainy)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 3 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[否][八政] 阿翎 欲设一场盛宴。  (feast)  违反不变量 food-nonneg（pantry）
+
+—— 第 4 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[否][八政] 阿翎 欲设一场盛宴。  (feast)  违反不变量 food-nonneg（pantry）
+
+—— 第 5 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿翎 挥汗操练，技艺渐长。  (practice)
+
+—— 第 6 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[否][八政] 阿翎 欲设一场盛宴。  (feast)  违反不变量 food-nonneg（pantry）
+
+—— 第 7 刻 ——
+[庶征] 雨水滋养，野莓又结出果实。  (rain-nourish)
+[八政] 阿岩 采回两捧野莓。  (forage)
+
+—— 第 8 刻 ——
+[庶征] 雨过天晴，云开日出。  (turn-sunny)
+[八政] 阿翎 采回两捧野莓。  (forage)
+
+—— 终态 ——
+bush BerryBush {amount=5}
+ling Person {name=阿翎, satiety=0.7, skill=0.3}
+pantry Food {amount=9}
+rock Person {name=阿岩, satiety=0.8, skill=0.2}
+world World {weather=sunny}
+R neighbor rock -> ling
+final_hash=d73fd555aa61e6d4

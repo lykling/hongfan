@@ -1,0 +1,69 @@
+# =============================================================================
+# HONGFAN C++ Static Analysis (clang-tidy)
+# =============================================================================
+#
+# All code must pass clang-tidy with no warnings (zero-warning policy).
+# Enforced by CI (lint job).
+
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-pro-type-cstyle-cast,
+  cppcoreguidelines-pro-type-static-cast-downcast,
+  cppcoreguidelines-slicing,
+  google-*,
+  hicpps-exception-baseclass,
+  hicpps-explicit-conversions,
+  misc-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -cert-err58-cpp,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -cppcoreguidelines-pro-bounds-constant-array-index,
+  -google-readability-todo,
+  -google-runtime-references,
+  -google-build-using-namespace,
+  -hicpp-no-array-decay,
+  -modernize-use-trailing-return-type,
+  -modernize-avoid-c-arrays,
+  -modernize-use-nodiscard,
+  -readability-magic-numbers,
+  -readability-identifier-length,
+  -readability-function-cognitive-complexity,
+  -readability-else-after-return,
+  -misc-non-private-member-variables-in-classes,
+  -misc-no-recursion,
+  -google-runtime-int
+
+WarningsAsErrors: '*'
+
+HeaderFilterRegex: '^(?!.*(third_party|build|\.cache|/usr/)).*$'
+
+CheckOptions:
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case

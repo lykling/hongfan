@@ -1,0 +1,55 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {"major": 3, "minor": 25, "patch": 0},
+    "configurePresets": [
+        {
+            "name": "_base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "dev",
+            "displayName": "Dev (debug)",
+            "inherits": "_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "displayName": "Release",
+            "inherits": "_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "asan",
+            "displayName": "AddressSanitizer",
+            "inherits": "_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer"
+            }
+        },
+        {
+            "name": "ubsan",
+            "displayName": "UndefinedBehaviorSanitizer",
+            "inherits": "_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_FLAGS": "-fsanitize=undefined -fno-omit-frame-pointer"
+            }
+        }
+    ],
+    "buildPresets": [
+        {"name": "dev", "configurePreset": "dev"},
+        {"name": "release", "configurePreset": "release"},
+        {"name": "asan", "configurePreset": "asan"},
+        {"name": "ubsan", "configurePreset": "ubsan"}
+    ]
+}

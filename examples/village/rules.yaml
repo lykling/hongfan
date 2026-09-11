@@ -1,0 +1,120 @@
+ruleset: village
+time:
+  model: linear-tick
+rules:
+  - rule: def-world
+    kind: definition
+    entity: World
+    properties: { weather: str }
+  - rule: def-bush
+    kind: definition
+    entity: BerryBush
+    properties: { amount: num }
+  - rule: def-food
+    kind: definition
+    entity: Food
+    properties: { amount: num }
+  - rule: def-person
+    kind: definition
+    entity: Person
+    properties: { name: str, satiety: num, skill: num }
+  - rule: bush-nonneg
+    kind: invariant
+    forall: "b: BerryBush"
+    always: "b.amount >= 0"
+  - rule: food-nonneg
+    kind: invariant
+    forall: "f: Food"
+    always: "f.amount >= 0"
+  - rule: turn-rainy
+    kind: evolution
+    layer: geography
+    when:
+      - "w: World { weather == 'sunny' }"
+    probability: 0.35
+    effects:
+      - "set w.weather = 'rainy'"
+    narration: "乌云聚拢，雨落村落。"
+  - rule: turn-sunny
+    kind: evolution
+    layer: geography
+    when:
+      - "w: World { weather == 'rainy' }"
+    probability: 0.5
+    effects:
+      - "set w.weather = 'sunny'"
+    narration: "雨过天晴，云开日出。"
+  - rule: rain-nourish
+    kind: evolution
+    layer: geography
+    priority: 1
+    when:
+      - "w: World { weather == 'rainy' }"
+      - "b: BerryBush { amount <= 8 }"
+    effects:
+      - "update b.amount + 1"
+    narration: "雨水滋养，野莓又结出果实。"
+  - rule: forage
+    kind: behavior
+    layer: person
+    when:
+      - "h: Person { satiety >= 0.2 }"
+      - "b: BerryBush { amount >= 2 }"
+      - "f: Food"
+    effects:
+      - "update b.amount - 2"
+      - "update f.amount + 2"
+    cost: 1.0
+    narration: "{{h.name}} 采回两捧野莓。"
+  - rule: feast
+    kind: behavior
+    layer: person
+    when:
+      - "h: Person"
+      - "f: Food { amount >= 4 }"
+    effects:
+      - "update f.amount - 6"
+    cost: 2.0
+    narration: "{{h.name}} 欲设一场盛宴。"
+  - rule: eat
+    kind: behavior
+    layer: person
+    when:
+      - "h: Person { satiety <= 0.7 }"
+      - "f: Food { amount >= 1 }"
+    effects:
+      - "update f.amount - 1"
+      - "update h.satiety + 0.3"
+    cost: 0.5
+    narration: "{{h.name}} 用了一餐，腹中暖了起来。"
+  - rule: hunger
+    kind: behavior
+    layer: person
+    when:
+      - "h: Person { satiety <= 0.5 }"
+      - "f: Food { amount == 0 }"
+    effects:
+      - "update h.satiety - 0.2"
+    narration: "粮罄，{{h.name}} 饥肠辘辘。"
+  - rule: practice
+    kind: behavior
+    layer: person
+    when:
+      - "h: Person { satiety >= 0.6 }"
+    effects:
+      - "update h.skill + 0.1"
+      - "update h.satiety - 0.1"
+    cost: 1.0
+    narration: "{{h.name}} 挥汗操练，技艺渐长。"
+  - rule: master-teaches
+    kind: relation
+    layer: person
+    when:
+      - "m: Person { skill >= 0.5 }"
+      - "s: Person { skill <= 0.4 }"
+      - "r: Relation { type == 'neighbor', src == m.id, dst == s.id }"
+    guard: "m.skill > s.skill"
+    effects:
+      - "update s.skill + 0.05"
+    cost: 0.5
+    narration: "{{m.name}} 向 {{s.name}} 倾囊相授。"

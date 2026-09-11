@@ -1,0 +1,40 @@
+ruleset: traveler
+time:
+  model: linear-tick
+rules:
+  - rule: def-traveler
+    kind: definition
+    entity: Traveler
+    properties: { stamina: num, skill: num }
+  - rule: traveler-nonneg
+    kind: invariant
+    forall: "t: Traveler"
+    always: "t.stamina >= 0 && t.skill >= 0"
+  - rule: trek
+    kind: behavior
+    layer: person
+    when:
+      - "p: Traveler { stamina >= 2 }"
+    effects:
+      - "update p.stamina - 1"
+    cost: 1.0
+    narration: "旅人冒风跋涉。"
+  - rule: train
+    kind: behavior
+    layer: person
+    when:
+      - "p: Traveler { stamina >= 2 }"
+    effects:
+      - "update p.skill + 1"
+      - "update p.stamina - 1"
+    cost: 2.0
+    narration: "旅人执剑习武。"
+  - rule: rest
+    kind: behavior
+    layer: person
+    when:
+      - "p: Traveler"
+    effects:
+      - "update p.stamina + 2"
+    cost: 0.5
+    narration: "旅人枕石而歇。"

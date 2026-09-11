@@ -1,0 +1,43 @@
+# =============================================================================
+# HONGFAN C++ Code Format
+# =============================================================================
+#
+# Based on Google C++ Style, with project-specific overrides.
+# Reference: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# Enforced by tools/format.sh (clang-format), pre-commit and CI.
+#
+# Per ADR-0015 (implementation language) and the zero-warning style policy.
+
+BasedOnStyle: Google
+Language: Cpp
+Standard: Latest
+
+# ---------------------------------------------------------------------------
+# Project-specific overrides (only what differs from Google defaults)
+# ---------------------------------------------------------------------------
+
+# Wider line (Google default is 80)
+ColumnLimit: 100
+
+# Force left pointer alignment (Google default derives from existing code)
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+# Stricter short-statement rules
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Inline
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+
+# Always break template declarations onto their own line
+AlwaysBreakTemplateDeclarations: Yes
+
+# Sort and group includes (HONGFAN public headers get priority 4)
+IncludeBlocks: Regroup
+IncludeCategories:
+  - { Regex: '^<[^/]+\.h>$',          Priority: 1 }  # C system
+  - { Regex: '^<[^/\.]+>$',           Priority: 2 }  # C++ std
+  - { Regex: '^<.*\.h>$',             Priority: 3 }  # Other lib .h
+  - { Regex: '^"hongfan/.*"$',        Priority: 4 }  # HONGFAN public
+  - { Regex: '^"[^/]*"$',             Priority: 5 }  # Same-dir local
+  - { Regex: '^".*"$',                Priority: 6 }  # Other local

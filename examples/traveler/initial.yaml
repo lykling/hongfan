@@ -1,0 +1,2 @@
+entities:
+  - { id: traveler, type: Traveler, props: { stamina: 10, skill: 0 } }

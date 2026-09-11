@@ -1,0 +1,8 @@
+entities:
+  - { id: world, type: World, props: { weather: sunny } }
+  - { id: bush, type: BerryBush, props: { amount: 6 } }
+  - { id: pantry, type: Food, props: { amount: 3 } }
+  - { id: rock, type: Person, props: { name: 阿岩, satiety: 0.8, skill: 0.2 } }
+  - { id: ling, type: Person, props: { name: 阿翎, satiety: 0.9, skill: 0.1 } }
+relations:
+  - { type: neighbor, src: rock, dst: ling }

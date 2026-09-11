@@ -116,7 +116,7 @@ hongfan/
 ├── docs/
 │   ├── 00-design.md         # 概念设计（上游）
 │   ├── 01-implementation.md # 本文档
-│   └── adr/                 # 架构决策记录（ADR-0001…0017）
+│   └── adr/                 # 架构决策记录（ADR-0001…0019）
 ├── CMakeLists.txt
 ├── third_party/
 │   └── doctest.h           # 单头测试库入库，无包管理

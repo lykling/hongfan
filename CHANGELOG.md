@@ -28,12 +28,14 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ### Added — design documentation
 
-- Concept design v0.3: unified completion primitive, slices with confidence,
+- Concept design v0.4: unified completion primitive, slices with confidence,
   three-state solution space, scopes with partitioned determinism, instance
-  rules as data, attention expand/condense duality
+  rules as data, attention expand/condense duality, observation
+  materialization with worldline binding, solver layer with strict
+  proposal-verification separation
 - Implementation design: C++ language ADR, LLM boundary ADR, M1 data
   structures, normative determinism contract, task breakdown
-- 17 architecture decision records under docs/adr/
+- 19 architecture decision records under docs/adr/
 
 ### Added — project infrastructure
 

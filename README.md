@@ -78,9 +78,9 @@ ctest --test-dir build/release --output-on-failure
 | 入口 | 内容 |
 |---|---|
 | [docs/README.md](./docs/README.md) | 文档导览（三条阅读路径） |
-| [docs/00-design.md](./docs/00-design.md) | 概念设计 v0.3（补全原语/切面/作用域/个体规则/注意力） |
+| [docs/00-design.md](./docs/00-design.md) | 概念设计 v0.4（补全原语/切面/作用域/个体规则/注意力/观测落盘/求解器层） |
 | [docs/01-implementation.md](./docs/01-implementation.md) | 落地实现设计（M1 数据结构/确定性契约/任务分解） |
-| [docs/adr/](./docs/adr/README.md) | 架构决策记录 ADR-0001…0017 |
+| [docs/adr/](./docs/adr/README.md) | 架构决策记录 ADR-0001…0019 |
 | [CHANGELOG.md](./CHANGELOG.md) | 变更日志 |
 
 ## 命名与品牌（洪范九畴）

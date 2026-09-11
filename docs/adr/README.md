@@ -29,3 +29,5 @@
 | [0015](./0015-cpp-implementation-language.md) | 实现语言 = C++ | infra | ✅ | C++23 编译（仅 expected/format/print）；GCC 基准 + Clang 移植门禁；零运行时依赖 |
 | [0016](./0016-llm-boundary.md) | 大模型边界：创作与讲述，不裁决 | llm | ✅ | Run 复现域零 LLM 调用；六接缝各有校验边界 |
 | [0017](./0017-language-policy.md) | 语言政策：中文之声，英文提交 | infra | ✅ | 文档/注释/字符串中文；提交英文（机制强制，此处只记决策） |
+| [0018](./0018-observation-materialization.md) | 观测即落盘与世界线绑定 | core | ✅ | 坍缩写入史册层，重观测幂等；fork(k) 多元观测各线独立落盘 |
+| [0019](./0019-solver-proposal-verification.md) | 求解器层：提案与验证分离 | core | ✅ | 求解器只提案、内核重放验证；代价模型扩展至转移代价/轨迹泛函 |
